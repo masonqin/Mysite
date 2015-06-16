@@ -11,5 +11,5 @@ urlpatterns = patterns('',
    	('^time/$', current_datetime),
    	(r'^time/plus/(\d{1,2})/$', hours_ahead),
 
-    #url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 )

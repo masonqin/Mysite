@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'books',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -59,8 +60,17 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME' : '/home/ditto/project/webapp/mysite/test.db',
+        #'NAME' : '/home/ditto/project/webapp/mysite/test.db',
+        #'ENGINE' = ''
+        #'NAME' = ''
+        #'USER' = ''
+        #'PASSWORD' = ''
+        #'HOST' = ''
+        #'PORT' = ''
     }
+
 }
 
 # Internationalization
