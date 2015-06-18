@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+TEMPLATE_DIRS = (
+    '/home/ditto/project/Mysite/mysite/template',
+)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -61,8 +65,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME' : '/home/ditto/project/webapp/mysite/test.db',
         #'NAME' : '/home/ditto/project/webapp/mysite/test.db',
+        #'NAME' : '/home/ditto/project/webapp/mysite/test.db',
+        'NAME' : '/home/ditto/project/Mysite/test.db',
         #'ENGINE' = ''
         #'NAME' = ''
         #'USER' = ''

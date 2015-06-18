@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 from mysite.views import hello,current_datetime,hours_ahead
+from books.views import display_meta,search
 
 urlpatterns = patterns('',
     # Examples:
@@ -10,6 +11,8 @@ urlpatterns = patterns('',
    	('^hello/$', hello),
    	('^time/$', current_datetime),
    	(r'^time/plus/(\d{1,2})/$', hours_ahead),
+   	('^echo/$',display_meta),
+   	('^search-form',search),
 
     url(r'^admin/', include(admin.site.urls)),
 )
