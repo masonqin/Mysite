@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+Project_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),os.pardir))
+STATIC_DIR = os.path.join(Project_DIR,'static')
 
 TEMPLATE_DIRS = (
-    '/home/ditto/project/Mysite/mysite/template',
+    os.path.join(Project_DIR,'templates'),
 )
+
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -96,3 +100,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    ("css", os.path.join(STATIC_DIR,'css')),
+    ("js", os.path.join(STATIC_DIR,'js')),
+    ("fonts", os.path.join(STATIC_DIR,'fonts')),
+)
