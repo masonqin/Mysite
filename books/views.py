@@ -6,6 +6,7 @@ from django.template import Template, Context
 
 # Create your views here.
 from books.models import Book
+from bookCralwer import Spider_Model
 
 def display_meta(request):
 	values = request.META.items()
@@ -17,6 +18,7 @@ def display_meta(request):
 
 def search(request):
     error = False
+
     if 'q' in request.GET:
         q = request.GET['q']
         if not q:

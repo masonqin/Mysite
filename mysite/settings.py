@@ -71,7 +71,8 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         #'NAME' : '/home/ditto/project/webapp/mysite/test.db',
         #'NAME' : '/home/ditto/project/webapp/mysite/test.db',
-        'NAME' : '/home/ditto/project/Mysite/test.db',
+        #'NAME' : '/home/ditto/project/Mysite/test.db',
+        'NAME' : 'C:\\Users\\ditto\\Documents\\GitHub\\Mysite\\test.db',
         #'ENGINE' = ''
         #'NAME' = ''
         #'USER' = ''
