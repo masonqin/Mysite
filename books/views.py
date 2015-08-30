@@ -19,6 +19,9 @@ def display_meta(request):
 def search(request):
     error = False
 
+    myModel = Spider_Model()    
+    myModel.Start()
+
     if 'q' in request.GET:
         q = request.GET['q']
         if not q:
