@@ -52,29 +52,6 @@ class Spider_Model:
                     </div>.*? 
                     </td>.*?
             </table>""",re.S|re.X)
-
-        """ re backup
-
-                    <div.*?>.*?
-                        <a.*?href="(.*?)".*?>                   #item2 书目链接
-                           \s*(\S*?\s*?\S*?)\s*(<span.*?>(.*?)</span>)*?\s* 
-                                                                #item3 5书名
-                        .*?
-                        </a>.*? 
-                    </div>.*?
-                    <p.*?class="pl".*?>
-                        (.*?/?.*?)                              #item6 作者
-                        \s*/\s*
-                        (.*?)                                   #item7 出版社
-                        \s*/\s*
-                        (\S*)                                   #item8 日期
-                        \s*/\s* 
-                        (.*?)
-                        \s*                                     #item9 售价                                      
-                    </p>.*? 
-        """
-
-
         
         myItems = pattern.findall(unicodePage)
         offset = 0
@@ -92,20 +69,22 @@ class Spider_Model:
                 print u"原名:"   + item[6] + "\n"
             except:
                 print u"字符非法 \n"
-
             #print u"详细"   + item[7] + "\n"
-
             pattern_detail = re.compile(r"""
                         \s*(.*?)                        #item0 作者
                         \s*/\s*
                         (\S*?)                          #item1 出版社
                         \s*/\s*
-                        (\d*-\d*-?.\d*)                 #item2 日期
+                        (\d{1}\S*-?\d{1}\S*-?\d*\S*)   #item2 日期 xxx-xx-xx 
+                                                        #           xxx年xx月 
+                                                        #           可能连价格一起匹配
                         \s*/\s* 
                         (\d*\.\d*\S*)                   #item3 售价
                         \s*                                     
                         """,re.S|re.X)
+
             detailItems = pattern_detail.findall(item[7])
+            #print detailItems
             for detailItem in detailItems:
                 try:
                     print u"作者:"   + detailItem[0] + "\n"
@@ -118,21 +97,45 @@ class Spider_Model:
             print u"评分:"   + item[8] + "\n"
             print u"评价数:" + item[9] + "\n"
 
-            p = DouBanBook(
-                    topNum = g_num + offset,
-                    picLink = item[0],
-                    itemLink = item[1],
-                    titleMain = item[2],
-                    titleSec = item[4],
-                    titleOri = item[6],
-                    author = detailItem[0],
-                    publisher = detailItem[1],
-                    publishdate = detailItem[2],
-                    price = detailItem[3],
-                    score = item[8],
-                    evaluation = item[9]
-                )
-            p.save()
+            try:
+                top_index = g_num + offset
+                p = DouBanBook.objects.get(topNum=top_index)    
+
+                p.topNum = top_index
+                p.picLink = item[0]
+                p.itemLink = item[1]
+                p.titleMain = item[2]
+                p.titleSec = item[4]
+                p.titleOri = item[6]
+                p.author = detailItem[0]
+                p.publisher = detailItem[1]
+                p.publishdate = detailItem[2]
+                p.price = detailItem[3]
+                p.score = item[8]
+                p.evaluation = item[9]
+
+                p.save()
+
+                print "------------------update---------------"
+
+            except:   
+                p = DouBanBook(
+                        topNum = g_num + offset,
+                        picLink = item[0],
+                        itemLink = item[1],
+                        titleMain = item[2],
+                        titleSec = item[4],
+                        titleOri = item[6],
+                        author = detailItem[0],
+                        publisher = detailItem[1],
+                        publishdate = detailItem[2],
+                        price = detailItem[3],
+                        score = item[8],
+                        evaluation = item[9]
+                    )
+                p.save()
+
+                print "------------------create---------------"
 
             print "--------------------------------------"
 
@@ -146,7 +149,7 @@ class Spider_Model:
    
         while self.enable:    
             # 如果self的page数组中存有元素    
-            if page<4:    
+            if page<10:    
                 self.GetPage(page)    
                 page += 1
             else:

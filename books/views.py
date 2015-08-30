@@ -3,6 +3,8 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template import Template, Context
 
+import thread 
+
 
 # Create your views here.
 from books.models import Book
@@ -20,7 +22,8 @@ def search(request):
     error = False
 
     myModel = Spider_Model()    
-    myModel.Start()
+    thread.start_new_thread(myModel.Start,())
+    #thread.start_new_thread(myModel.GetPage,(9,))
 
     if 'q' in request.GET:
         q = request.GET['q']
