@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>form  请输入两个数字</p>
+<form method='post'>
+	{% csrf_token %}
+	{{ form }}
+	<input type="submit" value="提交">
+</form>
+
+<p>result is: {{result}}</p>
+
+
+<p>ajax  请输入两个数字</p>
+<form action="/add/" method="get">
+    a: <input type="text" id="a" name="a"> <br>
+    b: <input type="text" id="b" name="b"> <br>
+    <p>result: <span id='result'></span></p>
+    <button type="button" id='sum'>提交</button>
+</form>
+
+<form action="/get_pic/" method="get">
+    color: <input type="text" id="color" name="color" value="red"> <br>
+    number: <input type="text" id="number" name="number" value="1"> <br>
+    <p>result: <span id='result'></span></p>
+    <button type="button" id='get'>获取</button>
+</form>
+
+
+<div id="dict">Ajax 加载字典</div>
+<p id="dict_result"></p>
+ 
+<div id="list">Ajax 加载列表</div>
+<p id="list_result"></p>
+
+
+
+
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+	     $("#sum").click(function(){
+	        var a = $("#a").val();
+	        var b = $("#b").val();
+
+	        $.get("/add/",{'a':a,'b':b}, function(ret){
+	            $('#result').html(ret)
+	      })
+	    })
+
+	    // 列表 list
+		$('#list').click(function(){
+		  $.getJSON('/ajax_list/',function(ret){
+		    //返回值 ret 在这里是一个列表
+		    $('#list_result').html('')
+		    for (var i = ret.length - 1; i >= 0; i--) {
+		      // 把 ret 的每一项显示在网页上
+		      $('#list_result').append(' ' + ret[i])
+		    };
+		  })
+		})
+	 
+		// 字典 dict
+		$('#dict').click(function(){
+		  $.getJSON('/ajax_dict/',function(ret){
+		      //返回值 ret 在这里是一个字典
+		      $('#dict_result').html(ret.twz + '<br>');
+		      // 也可以用 ret['twz']
+		  	})
+		 })
+
+
+		$("#get").click(function(){
+
+	        var color = $("#color").val();
+	        var number = $("#number").val();
+
+	        $.get(/get_pic/, {'color':color,'number':number}, function(ret){
+	            $('#result').html('') //清空前面的结果
+	            $.each(ret, function(index, item){
+	                $('#result').append('<img src="/static/pics/'+item+'">');
+	            })
+	        })
+	    })
+ 
+	});
+
+</script>
+ 
+</body>
+</html>

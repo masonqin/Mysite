@@ -3,12 +3,19 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template import Template, Context
 
+import os
+import json
 import thread 
 
+from django.conf import settings
+
+BASE_DIR = settings.BASE_DIR  
+PICS = os.listdir(os.path.join(BASE_DIR, 'static/pics'))
 
 # Create your views here.
 from books.models import Book
 from bookCralwer import Spider_Model
+from books.forms import AddForm
 
 def display_meta(request):
 	values = request.META.items()
@@ -35,3 +42,46 @@ def search(request):
                 {'books': books, 'query': q})
     return render_to_response('search_form.html',
         {'error': error})
+
+def ajax(request):
+    if request.method == 'POST':
+        form = AddForm(request.POST) 
+         
+        if form.is_valid():
+            a = form.cleaned_data['a']
+            b = form.cleaned_data['b']
+            return render_to_response('ajaxTest.html', {'form': form, 'result':str(int(a) + int(b))})
+     
+    else:
+        form = AddForm()
+    return render(request, 'ajaxTest.html', {'form': form})
+
+def add(request):
+    a = request.GET['a']
+    b = request.GET['b']
+    a = int(a)
+    b = int(b)
+    return HttpResponse(str(a+b))
+ 
+def ajax_list(request):
+    a = range(100)
+    return HttpResponse(json.dumps(a), content_type='application/json')
+    #return JsonResponse(a, safe=False)
+ 
+def ajax_dict(request):
+    name_dict = {'twz': 'Love python and Django', 'zqxt': 'I am teaching Django'}
+    return HttpResponse(json.dumps(name_dict), content_type='application/json')
+    #return JsonResponse(name_dict)
+
+def get_pic(request):
+    color = request.GET.get('color')
+    number = request.GET.get('number')
+    name = '{}_{}'.format(color, number)
+
+    result_list = filter(lambda x: x.startswith(name), PICS)
+
+    print 'result_list', result_list
+
+    return HttpResponse(
+        json.dumps(result_list),
+        content_type='application/json')

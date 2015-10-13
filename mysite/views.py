@@ -7,7 +7,6 @@ import datetime
 def hello(request):
     return HttpResponse("Hello world")
 
-
 def current_datetime(request):
     now = datetime.datetime.now()
     html = "<html><body>It is now %s.</body></html>" % now
@@ -24,6 +23,8 @@ def hours_ahead(request, offset):
 
 def bootstrap_index(request):
     return render_to_response('Jumbotron.html')
+
+
 
 
 
