@@ -29,7 +29,17 @@
 
 
 <div id="dict">Ajax 加载字典</div>
-<p id="dict_result"></p>
+<table border="1" id="dict_result">
+	<tr>	
+		<th>
+			书名
+		</th>
+		<th>
+			出版社
+		</th>
+	</tr>
+</table>
+
  
 <div id="list">Ajax 加载列表</div>
 <p id="list_result"></p>
@@ -57,7 +67,7 @@
 		    $('#list_result').html('')
 		    for (var i = ret.length - 1; i >= 0; i--) {
 		      // 把 ret 的每一项显示在网页上
-		      $('#list_result').append(' ' + ret[i])
+		      $('#list_result').append('' + ret[i])
 		    };
 		  })
 		})
@@ -65,9 +75,15 @@
 		// 字典 dict
 		$('#dict').click(function(){
 		  $.getJSON('/ajax_dict/',function(ret){
+		      //回调函数传入的是返回值
 		      //返回值 ret 在这里是一个字典
-		      $('#dict_result').html(ret.twz + '<br>');
-		      // 也可以用 ret['twz']
+		      //$('#dict_result').html("<tr><th>书名</th><th>出版社</th></tr>")_
+		      //$('#dict_result').html('<p>aaaa</p>')_
+		      $.each(ret,function(index,context){
+		      	$('#dict_result').append('<tr><td>' + context.titleMain + '</td>' + '<td>' + context.publisher + '</td></tr>' + '<br>');
+		      });
+
+		    //$('#dict_result').append('<tr><td>' + ret.titleMain + '</td>' + '<td>' + ret.publisher + '</td></tr>' + '<br>');
 		  	})
 		 })
 

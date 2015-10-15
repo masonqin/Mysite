@@ -7,6 +7,8 @@ import os
 import json
 import thread 
 
+from models import DouBanBook
+
 from django.conf import settings
 
 BASE_DIR = settings.BASE_DIR  
@@ -69,7 +71,17 @@ def ajax_list(request):
     #return JsonResponse(a, safe=False)
  
 def ajax_dict(request):
-    name_dict = {'twz': 'Love python and Django', 'zqxt': 'I am teaching Django'}
+    
+    myModel = Spider_Model()    
+    thread.start_new_thread(myModel.Start,())
+
+    name_dict = []
+    for i in range(1,250):
+        p = DouBanBook.objects.get(topNum=i)
+        name_dict.append({'titleMain': p.titleMain, 'publisher': p.publisher})
+
+    #print name_dict
+
     return HttpResponse(json.dumps(name_dict), content_type='application/json')
     #return JsonResponse(name_dict)
 
